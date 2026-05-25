@@ -3,64 +3,84 @@ public class Main {
     public static void main(String[] args) {
 
         StudentController controller =
-                new StudentController(10);
+                new StudentController(100);
 
-        StudentView view = new StudentView();
-
-        controller.addStudent(101, "Anisha", 85);
-        controller.addStudent(102, "John", 78);
-        controller.addStudent(103, "David", 90);
+        StudentView view =
+                new StudentView();
 
         while (true) {
 
             view.showMenu();
+
             int choice = view.getChoice();
 
             switch (choice) {
 
                 case 1:
 
+                    int id = view.getId();
+                    String name = view.getName();
+                    int marks = view.getMarks();
+
+                    controller.addStudent(id, name, marks);
+
+                    view.showMessage(
+                            "Student Added Successfully");
+                    break;
+
+                case 2:
+
                     view.displayStudents(
                             controller.getStudents(),
                             controller.getCount());
                     break;
 
-                case 2:
+                case 3:
 
                     int searchId = view.getId();
 
-                    if (controller.findStudent(searchId) != null)
-                        view.showMessage("Student Found");
+                    Student s =
+                            controller.findStudent(searchId);
+
+                    if (s != null)
+                        view.showStudent(s);
                     else
-                        view.showMessage("Student Not Found");
+                        view.showMessage(
+                                "Student Not Found");
 
-                    break;
-
-                case 3:
-
-                    int updateId = view.getId();
-                    int marks = view.getMarks();
-
-                    view.showMessage(
-                            controller.updateMarks(updateId, marks));
                     break;
 
                 case 4:
 
-                    int deleteId = view.getId();
+                    int updateId = view.getId();
+
+                    int newMarks = view.getMarks();
 
                     view.showMessage(
-                            controller.deleteStudent(deleteId));
+                            controller.updateMarks(
+                                    updateId,
+                                    newMarks));
                     break;
 
                 case 5:
 
-                    System.out.println("Exiting...");
+                    int deleteId = view.getId();
+
+                    view.showMessage(
+                            controller.deleteStudent(
+                                    deleteId));
+                    break;
+
+                case 6:
+
+                    System.out.println(
+                            "Exiting Program...");
                     return;
 
                 default:
 
-                    System.out.println("Invalid Choice");
+                    System.out.println(
+                            "Invalid Choice");
             }
         }
     }
