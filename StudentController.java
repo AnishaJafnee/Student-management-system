@@ -9,7 +9,12 @@ class StudentController {
     }
 
     void addStudent(int id, String name, int marks) {
-        students[count++] = new Student(id, name, marks);
+
+        if (count < students.length) {
+            students[count++] = new Student(id, name, marks);
+        } else {
+            System.out.println("Storage Full!");
+        }
     }
 
     Student[] getStudents() {
@@ -21,15 +26,19 @@ class StudentController {
     }
 
     Student findStudent(int id) {
+
         for (int i = 0; i < count; i++) {
+
             if (students[i].id == id) {
                 return students[i];
             }
         }
+
         return null;
     }
 
     String updateMarks(int id, int marks) {
+
         Student s = findStudent(id);
 
         if (s == null)
