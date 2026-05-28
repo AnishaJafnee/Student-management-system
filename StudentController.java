@@ -1,68 +1,164 @@
+import java.sql.*;
+
 class StudentController {
 
-    Student[] students;
-    int count;
+    Connection con;
 
-    StudentController(int size) {
-        students = new Student[size];
-        count = 0;
+    StudentController() {
+
+        con = DBConnection.getConnection();
     }
 
-    void addStudent(int id, String name, int marks) {
+    void addStudent(int id,
+                    String name,
+                    int marks) {
 
-        if (count < students.length) {
-            students[count++] = new Student(id, name, marks);
-        } else {
-            System.out.println("Storage Full!");
+        try {
+
+            String query =
+                "INSERT INTO students VALUES (?, ?, ?)";
+
+            PreparedStatement pst =
+                con.prepareStatement(query);
+
+            pst.setInt(1, id);
+            pst.setString(2, name);
+            pst.setInt(3, marks);
+
+            pst.executeUpdate();
+
+            System.out.println(
+                "Student Added Successfully");
+
+        } catch (Exception e) {
+
+            System.out.println(e);
         }
     }
 
-    Student[] getStudents() {
-        return students;
-    }
+    void displayStudents() {
 
-    int getCount() {
-        return count;
-    }
+        try {
 
-    Student findStudent(int id) {
+            String query =
+                "SELECT * FROM students";
 
-        for (int i = 0; i < count; i++) {
+            Statement st =
+                con.createStatement();
 
-            if (students[i].id == id) {
-                return students[i];
+            ResultSet rs =
+                st.executeQuery(query);
+
+            System.out.println(
+                "\nStudent Details");
+
+            while (rs.next()) {
+
+                System.out.println(
+                    rs.getInt("id") +
+                    " | " +
+                    rs.getString("name") +
+                    " | " +
+                    rs.getInt("marks"));
             }
+
+        } catch (Exception e) {
+
+            System.out.println(e);
         }
-
-        return null;
     }
 
-    String updateMarks(int id, int marks) {
+    void searchStudent(int id) {
 
-        Student s = findStudent(id);
+        try {
 
-        if (s == null)
-            return "Student Not Found";
+            String query =
+                "SELECT * FROM students WHERE id=?";
 
-        s.marks = marks;
-        return "Marks Updated Successfully";
-    }
+            PreparedStatement pst =
+                con.prepareStatement(query);
 
-    String deleteStudent(int id) {
+            pst.setInt(1, id);
 
-        for (int i = 0; i < count; i++) {
+            ResultSet rs =
+                pst.executeQuery();
 
-            if (students[i].id == id) {
+            if (rs.next()) {
 
-                for (int j = i; j < count - 1; j++) {
-                    students[j] = students[j + 1];
-                }
+                System.out.println(
+                    rs.getInt("id") +
+                    " | " +
+                    rs.getString("name") +
+                    " | " +
+                    rs.getInt("marks"));
 
-                count--;
-                return "Student Deleted Successfully";
+            } else {
+
+                System.out.println(
+                    "Student Not Found");
             }
-        }
 
-        return "Student Not Found";
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+
+    void updateMarks(int id,
+                     int marks) {
+
+        try {
+
+            String query =
+                "UPDATE students SET marks=? WHERE id=?";
+
+            PreparedStatement pst =
+                con.prepareStatement(query);
+
+            pst.setInt(1, marks);
+            pst.setInt(2, id);
+
+            int rows =
+                pst.executeUpdate();
+
+            if (rows > 0)
+                System.out.println(
+                    "Marks Updated");
+            else
+                System.out.println(
+                    "Student Not Found");
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+    }
+
+    void deleteStudent(int id) {
+
+        try {
+
+            String query =
+                "DELETE FROM students WHERE id=?";
+
+            PreparedStatement pst =
+                con.prepareStatement(query);
+
+            pst.setInt(1, id);
+
+            int rows =
+                pst.executeUpdate();
+
+            if (rows > 0)
+                System.out.println(
+                    "Student Deleted");
+            else
+                System.out.println(
+                    "Student Not Found");
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
     }
 }
