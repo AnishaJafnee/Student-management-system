@@ -6,7 +6,8 @@ class StudentView {
 
     void showMenu() {
 
-        System.out.println("\n----- Student Menu -----");
+        System.out.println("\n--- MENU ---");
+
         System.out.println("1. Add Student");
         System.out.println("2. Display Students");
         System.out.println("3. Search Student");
@@ -23,14 +24,15 @@ class StudentView {
 
     int getId() {
 
-        System.out.print("Enter Student ID: ");
+        System.out.print("Enter ID: ");
         return sc.nextInt();
     }
 
     String getName() {
 
         sc.nextLine();
-        System.out.print("Enter Student Name: ");
+
+        System.out.print("Enter Name: ");
         return sc.nextLine();
     }
 
@@ -38,35 +40,5 @@ class StudentView {
 
         System.out.print("Enter Marks: ");
         return sc.nextInt();
-    }
-
-    void displayStudents(Student[] students, int count) {
-
-        if (count == 0) {
-            System.out.println("No Students Found");
-            return;
-        }
-
-        System.out.println("\nStudent Details");
-
-        for (int i = 0; i < count; i++) {
-
-            System.out.println(
-                    "ID : " + students[i].id +
-                    " | Name : " + students[i].name +
-                    " | Marks : " + students[i].marks);
-        }
-    }
-
-    void showStudent(Student s) {
-
-        System.out.println("\nStudent Found");
-        System.out.println("ID : " + s.id);
-        System.out.println("Name : " + s.name);
-        System.out.println("Marks : " + s.marks);
-    }
-
-    void showMessage(String msg) {
-        System.out.println(msg);
     }
 }
