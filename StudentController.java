@@ -1,6 +1,6 @@
 import java.sql.*;
 
-class StudentController {
+public class StudentController {
 
     Connection con;
 
@@ -15,8 +15,27 @@ class StudentController {
 
         try {
 
+            String check =
+                "SELECT * FROM students WHERE id=?";
+
+            PreparedStatement checkStmt =
+                con.prepareStatement(check);
+
+            checkStmt.setInt(1, id);
+
+            ResultSet rs =
+                checkStmt.executeQuery();
+
+            if(rs.next()) {
+
+                System.out.println(
+                    "ID already exists");
+
+                return;
+            }
+
             String query =
-                "INSERT INTO students VALUES (?, ?, ?)";
+                "INSERT INTO students VALUES(?,?,?)";
 
             PreparedStatement pst =
                 con.prepareStatement(query);
@@ -30,7 +49,7 @@ class StudentController {
             System.out.println(
                 "Student Added Successfully");
 
-        } catch (Exception e) {
+        } catch(Exception e) {
 
             System.out.println(e);
         }
@@ -50,19 +69,19 @@ class StudentController {
                 st.executeQuery(query);
 
             System.out.println(
-                "\nStudent Details");
+                "\n--- Student Details ---");
 
-            while (rs.next()) {
+            while(rs.next()) {
 
                 System.out.println(
-                    rs.getInt("id") +
-                    " | " +
-                    rs.getString("name") +
-                    " | " +
+                    rs.getInt("id")
+                    + " | " +
+                    rs.getString("name")
+                    + " | " +
                     rs.getInt("marks"));
             }
 
-        } catch (Exception e) {
+        } catch(Exception e) {
 
             System.out.println(e);
         }
@@ -83,13 +102,13 @@ class StudentController {
             ResultSet rs =
                 pst.executeQuery();
 
-            if (rs.next()) {
+            if(rs.next()) {
 
                 System.out.println(
-                    rs.getInt("id") +
-                    " | " +
-                    rs.getString("name") +
-                    " | " +
+                    rs.getInt("id")
+                    + " | " +
+                    rs.getString("name")
+                    + " | " +
                     rs.getInt("marks"));
 
             } else {
@@ -98,7 +117,7 @@ class StudentController {
                     "Student Not Found");
             }
 
-        } catch (Exception e) {
+        } catch(Exception e) {
 
             System.out.println(e);
         }
@@ -121,14 +140,18 @@ class StudentController {
             int rows =
                 pst.executeUpdate();
 
-            if (rows > 0)
-                System.out.println(
-                    "Marks Updated");
-            else
-                System.out.println(
-                    "Student Not Found");
+            if(rows > 0) {
 
-        } catch (Exception e) {
+                System.out.println(
+                    "Marks Updated Successfully");
+
+            } else {
+
+                System.out.println(
+                    "Student ID Not Found");
+            }
+
+        } catch(Exception e) {
 
             System.out.println(e);
         }
@@ -149,14 +172,18 @@ class StudentController {
             int rows =
                 pst.executeUpdate();
 
-            if (rows > 0)
-                System.out.println(
-                    "Student Deleted");
-            else
-                System.out.println(
-                    "Student Not Found");
+            if(rows > 0) {
 
-        } catch (Exception e) {
+                System.out.println(
+                    "Student Deleted Successfully");
+
+            } else {
+
+                System.out.println(
+                    "Student ID Not Found");
+            }
+
+        } catch(Exception e) {
 
             System.out.println(e);
         }

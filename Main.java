@@ -8,14 +8,14 @@ public class Main {
         StudentView view =
             new StudentView();
 
-        while (true) {
+        while(true) {
 
             view.showMenu();
 
             int choice =
                 view.getChoice();
 
-            switch (choice) {
+            switch(choice) {
 
                 case 1:
 
@@ -38,6 +38,7 @@ public class Main {
                 case 2:
 
                     controller.displayStudents();
+
                     break;
 
                 case 3:
@@ -72,7 +73,8 @@ public class Main {
 
                     System.out.println(
                         "Exiting...");
-                    return;
+
+                    System.exit(0);
 
                 default:
 
